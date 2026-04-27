@@ -1,8 +1,16 @@
 import express from 'express'
 
-// const express = require('express');
+// Import Routes
+import movieRoutes from './routes/movieRoutes.js';
 
 const app = express();
+
+
+
+// API Routes (where we apply them)
+app.use("/movies", movieRoutes);
+
+
 
 app.get('/hello', (req, res) => {
     res.json({message: "Hello World"})
