@@ -40,4 +40,38 @@ const register = async (req, res) => {
 
 
 
-export {register}
+
+const login = async (req, res) => {
+    const { email, password} = req.body;
+
+    //Check if user already exists in the table
+    const user = await prisma.user.findUnique({
+        where: {email: email},
+    });
+
+    if(!user) {
+        return res.status(401).json({error: "Invalid email or password"})
+    }
+
+    //verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+
+    if(!isPasswordValid) {
+        return res.status(401).json({error: "Invalid email or password"})
+    }
+
+    //generate JWT token
+
+    res.status(201).json({
+        status: "Seccess",
+        data: {
+            user: {
+                id: user.id,
+                email: email,
+            }
+        }
+    })
+}
+
+
+export {register, login}
