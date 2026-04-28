@@ -1,10 +1,13 @@
 import express from "express";
 import {addToWatchlist} from '../controllers/watchlistController.js'
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 
 const router = express.Router();
 
-router.post("/register", addToWatchlist);
+router.post("/", addToWatchlist);
+
+router.use(authMiddleware)
 
 
 
