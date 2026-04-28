@@ -9,10 +9,8 @@ import movieRoutes from './routes/movieRoutes.js';
 config();
 connectDB();
 
-
-config();
-
 const app = express();
+app.use(express.json());
 
 
 
@@ -26,7 +24,7 @@ app.get('/hello', (req, res) => {
 });
 
 const PORT = 5001;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server running on PORT ${PORT}`);
     
 });
@@ -35,7 +33,7 @@ app.listen(PORT, () => {
 //Handle unhandled promise rejections (e.g. database connection errors)
 process.on("unhandledRejection", (err) => {
     console.error("Unhandled Rejection: ", err);
-    Server.close(async () => {
+    server.close(async () => {
         await disconecctDB();
         process.exit(1);
     });
@@ -53,7 +51,7 @@ process.on("uncaughtException", async (err) => {
 //Graceful shutdown
 process.on("SIGTERM", async () => {
     console.log("SIGTERM received, shutting down gracefully");
-    Server.close(async () => {
+    server.close(async () => {
         await disconecctDB();
         process.exit(0);
     });

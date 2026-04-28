@@ -4,7 +4,6 @@ import express from "express";
 const router = express.Router()
 
 router.get("/",(req,res) => {
-    users.create("")
     res.json({httpMethod: "get"});
 });
 
@@ -23,7 +22,3 @@ router.delete("/",(req,res) => {
 });
 
 export default router
-
-
-
-// postgres://5344aaa9affa21b0b76ea6d209dd4ce904193a544edd08dc408db1e29be8de22:sk_fZLyWOUfdBVSdw7nWtp2U@db.prisma.io:5432/postgres?sslmode=require
