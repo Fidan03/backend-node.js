@@ -71,8 +71,3 @@ enum WatchlistStatus {
 
 
 // usr -> movie -> watchlist
-
-
-
-//neon
-// postgresql://neondb_owner:npg_3THOyw4QtnKj@ep-shiny-mud-ang001fn.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require  
