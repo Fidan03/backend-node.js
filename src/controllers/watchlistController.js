@@ -2,6 +2,54 @@ import {prisma} from '../config/db.js'
 
 
 
+const addToWatchlist = async (req, res) => {
+    const {movieId, status, rating, notes, userId } = req.body;
+
+    //Verify movie exists
+    const movie = await prisma.movie.findUnique({
+        where: {id: movieId}
+    });
+
+    if (!movie) {
+        return res.status(404).json({error: "Movie not found"});
+    }
+
+    //check if already added
+    const existingInWatchlist = await prisma.watchlistItem.findUnique({
+        where: {
+            userId_movieId: {
+                userId: req.user.id,
+                movieId: movieId,
+            },
+        },
+    });
+
+    if (existingInWatchlist) {
+        return res.status(400).json({error: "Movie already exist"});
+    }
+
+    const watchlistItem = await prisma.watchlistItem.create({
+        data: {
+            userId: req.user.id,
+            movieId,
+            status: status || "PLANNED",
+            rating,
+            notes,
+        }
+    });
+
+    res.status(201).json({
+        status: "success",
+        data: {
+            watchlistItem,
+        }
+    });
+};
+
+
+
+
+
 /**
  * Update watchlist item
  * Updates status, rating, or notes
@@ -47,52 +95,6 @@ const updateWatchlistItem = async (req, res) => {
   });
 };
 
-
-
-
-const addToWatchlist = async (req, res) => {
-    const {movieId, status, rating, notes, userId } = req.body;
-
-    //Verify movie exists
-    const movie = await prisma.movie.findUnique({
-        where: {id: movieId}
-    });
-
-    if (!movie) {
-        return res.status(404).json({error: "Movie not found"});
-    }
-
-    //check if already added
-    const existingInWatchlist = await prisma.watchlistItem.findUnique({
-        where: {
-            userId_movieId: {
-                userId: req.user.id,
-                movieId: movieId,
-            },
-        },
-    });
-
-    if (existingInWatchlist) {
-        return res.status(400).json({error: "Movie already exist"});
-    }
-
-    const watchlistItem = await prisma.watchlistItem.create({
-        data: {
-            userId: req.user.id,
-            movieId,
-            status: status || "PLANNED",
-            rating,
-            notes,
-        }
-    });
-
-    res.status(201).json({
-        status: "success",
-        data: {
-            watchlistItem,
-        }
-    });
-};
 
 
 
