@@ -5,9 +5,9 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", addToWatchlist);
+router.use(authMiddleware);
 
-router.use(authMiddleware)
+router.post("/", addToWatchlist);
 
 
 
