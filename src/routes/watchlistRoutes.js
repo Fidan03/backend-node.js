@@ -1,5 +1,5 @@
 import express from "express";
-import {addToWatchlist} from '../controllers/watchlistController.js'
+import {addToWatchlist, removeFromWatchlist} from '../controllers/watchlistController.js'
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 
