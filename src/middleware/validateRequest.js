@@ -1,16 +1,19 @@
-
-
-
 export const validateRequest = (schema) => {
-    return (res, req, next) => {
-        const result = schema.safePars(req.body);
+  return (req, res, next) => {
+    const result = schema.safeParse(req.body);
 
-        if(!result.success){
-            const errorMessages = result.error.map((err) => err.message);
-            const error = errorMessages.join(" ,");
-            return res.status(400).json({message: error})
-        }
+    if (!result.success) {
+      const formatted = result.error.format();
 
-        next()
+      const flatErrors = Object.values(formatted)
+        .flat()
+        .filter(Boolean)
+        .map((err) => err._errors)
+        .flat();
+
+      return res.status(400).json({ message: flatErrors.join(", ") });
     }
-}
+
+    next();
+  };
+};
