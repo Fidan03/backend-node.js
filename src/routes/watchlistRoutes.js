@@ -9,6 +9,8 @@ router.use(authMiddleware);
 
 router.post("/", addToWatchlist);
 
+// http://localhost:5001/watchlist/:id
+router.delete("/:id", removeFromWatchlist)
 
 
 export default router
